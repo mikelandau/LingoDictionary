@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LingoDictionary.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 
 namespace LingoDictionary
 {
@@ -26,6 +28,9 @@ namespace LingoDictionary
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IMongoClient>(new MongoClient("mongodb://localhost:27017"));
+
+            services.AddScoped<ITermRepository, TermRepository>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
